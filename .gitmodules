@@ -1,0 +1,4 @@
+[submodule "FileExplorer/dependencies/GLFW"]
+	path = FileExplorer/dependencies/GLFW
+	url = https://github.com/glfw/glfw.git
+	ignore = untracked
