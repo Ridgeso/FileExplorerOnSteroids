@@ -1,4 +1,10 @@
+# IDE settings
 .vs
+**.sln
+**.vcxproj
+**.vcxproj.*
 
+# Binaries
 bin/
 binInt/
+premake/premake5.exe
