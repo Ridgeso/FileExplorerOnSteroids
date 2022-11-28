@@ -1,11 +1,18 @@
-#include <GLFW/glfw3.h>
+#include "feospch.h"
+
 #include "FileExplorer/Core/Application.h"
 
-namespace Explorer {
+
+namespace FEOS
+{
+    Application* Application::s_Instance = nullptr;
 
     Application::Application()
     {
+        s_Instance = this;
 
+        m_Window = Window::Create(WindowProps("File Explorer", 800, 600));
+        m_Window->SetEventCallback(FEOS_EVENT_FN(Application::OnEvent));
     }
 
     Application::~Application()
@@ -13,33 +20,26 @@ namespace Explorer {
         
     }
 
-    void Application::run()
+    void Application::OnEvent(Event::Event& e)
     {
-        GLFWwindow* window;
+        Event::Dispatcher dispatcher(e);
 
-        if (!glfwInit())
-            return;
+        dispatcher.Dispatch<Event::WindowClose>(FEOS_EVENT_FN(Application::OnWindowClose));
 
-        window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
-        
-        if (!window)
-        {
-            glfwTerminate();
-            return;
-        }
-
-        glfwMakeContextCurrent(window);
-
-        while (!glfwWindowShouldClose(window))
-        {
-            glClear(GL_COLOR_BUFFER_BIT);
-
-            glfwSwapBuffers(window);
-
-            glfwPollEvents();
-        }
-        
-        glfwTerminate();
+        Info(e);
     }
 
+    void Application::run()
+    {
+        while (m_IsRunning)
+        {
+            m_Window->OnUpdate();
+        }
+    }
+
+    bool Application::OnWindowClose(Event::WindowClose& e)
+    {
+        m_IsRunning = false;
+        return true;
+    }
 }
