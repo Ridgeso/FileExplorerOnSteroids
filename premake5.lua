@@ -1,12 +1,12 @@
-workspace "FileExplorerAtSteroids"
+workspace "FileExplorerOnSteroids"
     startproject "ProgramClient"
     configurations { "Debug", "Release" }
     platforms { "Win32", "Win64" }
-	
+
     flags
-	{
-		"MultiProcessorCompile"
-	}
+    {
+        "MultiProcessorCompile"
+    }
 
     filter "platforms:Win32"
         system "Windows"

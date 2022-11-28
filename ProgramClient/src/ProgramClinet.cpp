@@ -1,9 +1,8 @@
+#define ENTRY_POINT
 #include <FileExplorer.h>
-#include <FileExplorer/Core/EntryPoint.h>
 
-namespace Explorer {
-
-
+namespace FEOS
+{
     class ProgramClinet : public Application
     {
     public:
@@ -26,6 +25,4 @@ namespace Explorer {
     {
         return new ProgramClinet();
     }
-
-
 }

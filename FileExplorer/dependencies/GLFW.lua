@@ -3,9 +3,9 @@ project "GLFW"
     location (LOC)
     
 
-    kind "staticlib"
+    kind "StaticLib"
     language "C"
-    staticruntime "on"
+    staticruntime "On"
     
     targetdir (LOC .. "bin/" .. outputdir .. "/")
     objdir (LOC .. "binInt/" .. outputdir .. "/")
@@ -34,13 +34,10 @@ project "GLFW"
 
     includedirs
     {
-        "include"
+        LOC .. "include"
     }
-    -- filter "action:gmake*"   
-    --     includedirs
-    --     {
-    --         "${prj.name}/deps/mingw"
-    --     }
+    filter "action:gmake*"   
+        includedirs { LOC .. "deps/mingw" }
 
     filter "system:windows"
         systemversion "latest"

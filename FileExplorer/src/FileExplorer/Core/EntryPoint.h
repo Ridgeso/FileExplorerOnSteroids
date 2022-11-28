@@ -6,13 +6,17 @@
 #ifdef FILE_EXPLORER_WINDOWS_PLATFOMR
 
 
-// export Explorer::Application* Explorer::CreateApplication();
+// export FEOS::Application* FEOS::CreateApplication();
 
 int main(int argc, char** argv)
 {
-    auto app = Explorer::CreateApplication();
+    FEOS::Log::Init();
+
+    auto app = FEOS::CreateApplication();
     app->run();
     delete app;
+
+    FEOS::Log::Shutdown();
 }
 
 

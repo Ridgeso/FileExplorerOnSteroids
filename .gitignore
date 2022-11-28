@@ -1,10 +1,14 @@
 # IDE settings
 .vs
-**.sln
-**.vcxproj
-**.vcxproj.*
+.vscode
 
 # Binaries
 bin/
 binInt/
 premake/premake5.exe
+
+# Compilation Files
+**.sln
+**.vcxproj
+**.vcxproj.*
+**/Makefile

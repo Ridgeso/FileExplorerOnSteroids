@@ -1,7 +1,10 @@
 project "FileExplorer"
-    kind "staticlib"
+    DEP = "dependencies/"
+
+
+    kind "StaticLib"
     language "C++"
-    cppdialect "C++11"
+    cppdialect "C++17"
 
     targetdir ("%{wks.location}/bin/" ..outputdir.. "/%{prj.name}")
     objdir ("%{wks.location}/binInt/" ..outputdir.. "/%{prj.name}")
@@ -12,16 +15,19 @@ project "FileExplorer"
         "src/**.cpp"
     }
 
+    pchheader "feospch.h"
+    pchsource "FileExplorer/src/feospch.cpp"
+
     includedirs
     {
         "src",
-        "dependencies/GLFW/include"
+        DEP .. "GLFW/include",
     }
 
     links
     {
         "GLFW",
-        "opengl32.lib"
+        "opengl32"
     }
 
     filter "system:windows"
