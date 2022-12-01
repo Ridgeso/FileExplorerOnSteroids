@@ -20,7 +20,13 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 group "Dependencies"
     include "FileExplorer/dependencies/GLFW.lua"
+    include "FileExplorer/dependencies/spdlog.lua"
 group ""
 
-include "FileExplorer"
-include "ProgramClient"
+group "Program"
+    include "FileExplorer"
+group ""
+
+group "Clients"
+    include "ProgramClient"
+group ""

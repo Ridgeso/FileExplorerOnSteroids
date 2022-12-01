@@ -2,3 +2,6 @@
 	path = FileExplorer/dependencies/GLFW
 	url = https://github.com/glfw/glfw.git
 	ignore = untracked
+[submodule "FileExplorer/dependencies/spdlog"]
+	path = FileExplorer/dependencies/spdlog
+	url = https://github.com/gabime/spdlog.git

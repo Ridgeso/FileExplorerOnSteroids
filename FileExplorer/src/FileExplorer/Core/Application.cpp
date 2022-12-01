@@ -25,8 +25,6 @@ namespace FEOS
         Event::Dispatcher dispatcher(e);
 
         dispatcher.Dispatch<Event::WindowClose>(FEOS_EVENT_FN(Application::OnWindowClose));
-
-        Info(e);
     }
 
     void Application::run()

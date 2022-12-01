@@ -5,6 +5,7 @@ project "FileExplorer"
     kind "StaticLib"
     language "C++"
     cppdialect "C++17"
+    staticruntime "Off"
 
     targetdir ("%{wks.location}/bin/" ..outputdir.. "/%{prj.name}")
     objdir ("%{wks.location}/binInt/" ..outputdir.. "/%{prj.name}")
@@ -22,17 +23,19 @@ project "FileExplorer"
     {
         "src",
         DEP .. "GLFW/include",
+
+        DEP .. "spdlog/include"
     }
 
     links
     {
         "GLFW",
+        "spdlog",
         "opengl32"
     }
 
     filter "system:windows"
         systemversion "latest"
-        staticruntime "On"
 
         defines
         {

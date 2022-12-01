@@ -2,7 +2,7 @@ project "ProgramClient"
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++17"
-    staticruntime "off"
+    staticruntime "Off"
 
     targetdir ("%{wks.location}/bin/" ..outputdir.. "/%{prj.name}")
     objdir ("%{wks.location}/binInt/" ..outputdir.. "/%{prj.name}")
@@ -16,7 +16,7 @@ project "ProgramClient"
     includedirs
     {
         "%{wks.location}/FileExplorer/src",
-        "%{wks.location}/FileExplorer/dependencies/GLFW/include"
+        "%{wks.location}/FileExplorer/dependencies/spdlog/include"
     }
 
     links
@@ -24,7 +24,7 @@ project "ProgramClient"
         "FileExplorer"
     }
     filter "action:gmake*"
-        links { "GLFW", "opengl32", "gdi32" }
+        links { "GLFW", "spdlog", "opengl32", "gdi32" }
  
     filter "system:windows"
         systemversion "latest"
