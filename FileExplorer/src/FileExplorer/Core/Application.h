@@ -4,7 +4,7 @@
 
 #include "FileExplorer/Core/Window.h"
 #include "FileExplorer/Events/ApplicationEvent.h"
-#include "FileExplorer/Core/Log.h"
+#include "FileExplorer/Core/Layer.h"
 
 
 namespace FEOS
@@ -18,15 +18,20 @@ namespace FEOS
         Window& GetWindow() { return *m_Window; }
         static Application& Get() { return *s_Instance; }
 
-        void run();
         void OnEvent(Event::Event& e);
 
+        void PushLayer(Layer* layer);
+        void PushOverlay(Layer* layer);
+
+        void run();
+        
     private:
         bool OnWindowClose(Event::WindowClose& e);
 
     private:
         bool m_IsRunning = true;
         Local<Window> m_Window;
+        LayerStack m_LayerStack;
         static Application* s_Instance;
     };
 

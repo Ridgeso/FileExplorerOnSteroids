@@ -12,3 +12,4 @@ premake/premake5.exe
 **.vcxproj
 **.vcxproj.*
 **/Makefile
+**.make

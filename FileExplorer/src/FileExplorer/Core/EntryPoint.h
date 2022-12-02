@@ -13,7 +13,7 @@ int main(int argc, char** argv)
     FEOS::Log::Init();
 
     auto app = FEOS::CreateApplication();
-    app->run();
+    app->Run();
     delete app;
 
     FEOS::Log::Shutdown();
