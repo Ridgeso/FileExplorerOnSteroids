@@ -7,20 +7,20 @@
 
 namespace FEOS
 {
-    std::shared_ptr<spdlog::logger> Log::s_ExplorerLogger;
-    std::shared_ptr<spdlog::logger> Log::s_ClientLogger;
+    Object<spdlog::logger> Log::s_ExplorerLogger;
+    Object<spdlog::logger> Log::s_ClientLogger;
 
     void Log::Init()
     {
         std::array<spdlog::sink_ptr, 2> logSinks = {
-            std::make_shared<spdlog::sinks::stdout_color_sink_mt>(),
-            std::make_shared<spdlog::sinks::basic_file_sink_mt>("FILE_EXPLORER.log", true)
+            CreateObject<spdlog::sinks::stdout_color_sink_mt>(),
+            CreateObject<spdlog::sinks::basic_file_sink_mt>("FILE_EXPLORER.log", true)
         };
         
         logSinks[0]->set_pattern("%^[%T] %n: %v%$");
         logSinks[1]->set_pattern("[%T] [%l] %n: %v");
 
-        s_ExplorerLogger = std::make_shared<spdlog::logger>(
+        s_ExplorerLogger = CreateObject<spdlog::logger>(
             "Explorer",
             logSinks.begin(),
             logSinks.end()
@@ -30,7 +30,7 @@ namespace FEOS
         s_ExplorerLogger->flush_on(spdlog::level::trace);
 
 
-        s_ClientLogger = std::make_shared<spdlog::logger>(
+        s_ClientLogger = CreateObject<spdlog::logger>(
             "Application",
             logSinks.begin(),
             logSinks.end()

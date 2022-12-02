@@ -1,6 +1,6 @@
 #pragma once
 
-#include <memory>
+#include "FileExplorer/Core/Base.h"
 
 #define SPDLOG_COMPILED_LIB
 #include <spdlog/spdlog.h>
@@ -15,12 +15,12 @@ namespace FEOS
         static void Init();
         static void Shutdown();
 
-        static std::shared_ptr<spdlog::logger>& GetExplorerLogger() { return s_ExplorerLogger; }
-        static std::shared_ptr<spdlog::logger>& GetClinetLogger() { return s_ClientLogger; }
+        static Object<spdlog::logger>& GetExplorerLogger() { return s_ExplorerLogger; }
+        static Object<spdlog::logger>& GetClinetLogger() { return s_ClientLogger; }
 
     private:
-        static std::shared_ptr<spdlog::logger> s_ExplorerLogger;
-        static std::shared_ptr<spdlog::logger> s_ClientLogger;
+        static Object<spdlog::logger> s_ExplorerLogger;
+        static Object<spdlog::logger> s_ClientLogger;
     };
 }
 
@@ -37,4 +37,3 @@ namespace FEOS
 #define FEOS_WARN(...)          ::FEOS::Log::GetClinetLogger()->warn(__VA_ARGS__)
 #define FEOS_INFO(...)          ::FEOS::Log::GetClinetLogger()->info(__VA_ARGS__)
 #define FEOS_TRACE(...)         ::FEOS::Log::GetClinetLogger()->trace(__VA_ARGS__)
-

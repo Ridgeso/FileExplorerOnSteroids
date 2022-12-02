@@ -1,5 +1,7 @@
 #pragma once
 
+#include "FileExplorer/Core/Base.h"
+
 #include "feospch.h"
 #include "FileExplorer/Events/Event.h"
 
@@ -25,7 +27,7 @@ namespace FEOS
     public:
         virtual ~Window() = default;
 
-        static std::unique_ptr<Window> Create(const WindowProps& props);
+        static Local<Window> Create(const WindowProps& props);
 
         virtual void OnUpdate() = 0;
 

@@ -1,8 +1,6 @@
 #pragma once
 
-#ifndef FILE_EXPLORER_WINDOWS_PLATFOMR
-#   error Only windows is supported
-#endif
+#include "FileExplorer/Core/Base.h"
 
 #include "FileExplorer/Core/Window.h"
 #include "FileExplorer/Events/ApplicationEvent.h"
@@ -28,7 +26,7 @@ namespace FEOS
 
     private:
         bool m_IsRunning = true;
-        std::unique_ptr<Window> m_Window;
+        Local<Window> m_Window;
         static Application* s_Instance;
     };
 

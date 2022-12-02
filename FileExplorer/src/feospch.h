@@ -6,6 +6,7 @@
 #include <utility>
 #include <algorithm>
 #include <functional>
+#include <filesystem>
 
 #include <vector>
 #include <string>
@@ -15,8 +16,10 @@
 #include <cstdint>
 #include <array>
 
+#include "FileExplorer/Core/Base.h"
 #include "FileExplorer/Core/Log.h"
+#include "FileExplorer/Core/Assert.h"
 
 #ifdef FILE_EXPLORER_WINDOWS_PLATFOMR
-#   include <windows.h>
+    #include <windows.h>
 #endif
