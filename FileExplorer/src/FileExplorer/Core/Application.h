@@ -23,7 +23,7 @@ namespace FEOS
         void PushLayer(Layer* layer);
         void PushOverlay(Layer* layer);
 
-        void run();
+        void Run();
         
     private:
         bool OnWindowClose(Event::WindowClose& e);

@@ -2,6 +2,11 @@
 	path = FileExplorer/dependencies/GLFW
 	url = https://github.com/glfw/glfw.git
 	ignore = untracked
+[submodule "FileExplorer/dependencies/imgui"]
+	path = FileExplorer/dependencies/imgui
+	url = https://github.com/ocornut/imgui.git
+	branch = docking
+	ignore = untracked
 [submodule "FileExplorer/dependencies/spdlog"]
 	path = FileExplorer/dependencies/spdlog
 	url = https://github.com/gabime/spdlog.git

@@ -1,5 +1,6 @@
+#pragma once
+
 #include "feospch.h"
-#include "FileExplorer/Core/Base.h"
 
 #include "FileExplorer/Events/Event.h"
 
@@ -9,7 +10,7 @@ namespace FEOS
     {       
     public:
         Layer(const std::string& name = "Layer");
-        virtual ~Layer();
+        virtual ~Layer() = default;
 
         virtual void OnAttach() {}
         virtual void OnDetach() {}

@@ -17,7 +17,6 @@ namespace FEOS
 
     Application::~Application()
     {
-        
     }
 
     void Application::OnEvent(Event::Event& e)
@@ -26,7 +25,7 @@ namespace FEOS
 
         dispatcher.Dispatch<Event::WindowClose>(FEOS_EVENT_FN(Application::OnWindowClose));
 
-        auto it = m_LayerStack.GetStack().rbegin()
+        auto it = m_LayerStack.GetStack().rbegin();
         while (it != m_LayerStack.GetStack().rend())
         {
             if (e.Handled)

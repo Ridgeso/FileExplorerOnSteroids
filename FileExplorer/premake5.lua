@@ -23,6 +23,7 @@ project "FileExplorer"
     {
         "src",
         DEP .. "GLFW/include",
+        DEP .. "imgui",
 
         DEP .. "spdlog/include"
     }
@@ -30,7 +31,9 @@ project "FileExplorer"
     links
     {
         "GLFW",
+        "imgui",
         "spdlog",
+        
         "opengl32"
     }
 

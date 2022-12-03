@@ -1,3 +1,5 @@
+#pragma once
+
 #include "FileExplorer/Events/Event.h"
 #include "FileExplorer/Core/KeyCodes.h"
 
