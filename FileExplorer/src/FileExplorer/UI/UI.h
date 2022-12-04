@@ -1,24 +1,31 @@
 #pragma once
 
+#include "FileExplorer/Core/Layer.h"
 #include "FileExplorer/Events/ApplicationEvent.h"
 
 
 namespace FEOS
 {
 
-    class UI
+    class UI : public Layer
     {
     public:
         UI();
         ~UI() = default;
 
-        void OnEvent(Event::Event& e);
+        virtual void OnAttach() override;
+        virtual void OnDetach() override;
+        virtual void OnEvent(Event::Event& e) override;
 
         void Begin();
         void End();
     
         void SetTheme();
+
     private:
+        // Tests
+        bool m_ShowDemo = true;
+        bool m_ShowAnotherWindow = true;
     }; 
 
 }

@@ -5,6 +5,7 @@
 #include "FileExplorer/Core/Window.h"
 #include "FileExplorer/Events/ApplicationEvent.h"
 #include "FileExplorer/Core/Layer.h"
+#include "FileExplorer/UI/UI.h"
 
 
 namespace FEOS
@@ -32,6 +33,7 @@ namespace FEOS
         bool m_IsRunning = true;
         Local<Window> m_Window;
         LayerStack m_LayerStack;
+        UI* m_UI;
         static Application* s_Instance;
     };
 

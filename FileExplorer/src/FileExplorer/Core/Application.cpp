@@ -13,6 +13,9 @@ namespace FEOS
 
         m_Window = Window::Create(WindowProps("File Explorer", 800, 600));
         m_Window->SetEventCallback(FEOS_EVENT_FN(Application::OnEvent));
+
+        m_UI = new UI;
+        PushOverlay(m_UI);
     }
 
     Application::~Application()
