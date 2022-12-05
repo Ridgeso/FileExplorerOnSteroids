@@ -34,7 +34,7 @@ namespace FEOS
         void PopLayer(Layer* layer);
         void PopOverlay(Layer* overlay);
 
-        std::vector<Layer*> GetStack() { return m_Layers; }
+        const std::vector<Layer*>& GetStack() const { return m_Layers; }
 
     private:
         std::vector<Layer*>::iterator LayerPosition(Layer* layer);

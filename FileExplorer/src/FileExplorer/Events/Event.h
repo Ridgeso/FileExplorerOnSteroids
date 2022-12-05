@@ -53,7 +53,7 @@ namespace FEOS::Event
         virtual const char* GetName() const = 0;
         virtual EventCategory GetCategory() const = 0;
         
-        inline bool IsInCategory(EventCategory category) const
+        bool IsInCategory(EventCategory category) const
         {
             return GetCategory() & category;
         }

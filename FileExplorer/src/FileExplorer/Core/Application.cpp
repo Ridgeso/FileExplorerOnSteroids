@@ -28,33 +28,46 @@ namespace FEOS
 
         dispatcher.Dispatch<Event::WindowClose>(FEOS_EVENT_FN(Application::OnWindowClose));
 
-        auto it = m_LayerStack.GetStack().rbegin();
-        while (it != m_LayerStack.GetStack().rend())
+        const std::vector<Layer*>& layerStack = m_LayerStack.GetStack();
+        for (auto it = layerStack.rbegin(); it != layerStack.rend(); ++it)
         {
             if (e.Handled)
                 break;
-            (*it++)->OnEvent(e);
+            (*it)->OnEvent(e);
         }
     }
 
     void Application::PushLayer(Layer* layer)
     {
         m_LayerStack.PushLayer(layer);
+        layer->OnAttach();
     }
 
     void Application::PushOverlay(Layer* overlay)
     {
         m_LayerStack.PushOverlay(overlay);
+        overlay->OnAttach();
     }
 
     void Application::Run()
     {
         while (m_IsRunning)
         {
-            m_Window->OnUpdate();
-
             for (Layer* layer : m_LayerStack.GetStack())
+            {
                 layer->OnUpdate();
+            }
+
+            m_UI->Begin();
+            {
+                for (Layer* layer : m_LayerStack.GetStack())
+                {
+                    layer->OnUIDraw();
+                }
+            }
+            m_UI->End();
+
+            m_Window->OnUpdate();
         }
     }
 

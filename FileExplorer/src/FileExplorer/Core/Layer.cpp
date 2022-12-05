@@ -7,7 +7,6 @@ namespace FEOS
         : m_Name(name)
     {
     }
-
     
     LayerStack::~LayerStack()
     {

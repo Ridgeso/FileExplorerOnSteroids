@@ -24,7 +24,7 @@ project "ProgramClient"
         "FileExplorer"
     }
     filter "action:gmake*"
-        links { "GLFW", "spdlog", "opengl32", "gdi32" }
+        links { "GLFW", "spdlog", "imgui", "opengl32", "gdi32" }
  
     filter "system:windows"
         systemversion "latest"
