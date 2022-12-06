@@ -37,6 +37,7 @@ namespace FEOS
 
         Window& GetWindow() { return *m_Window; }
         static Application& Get() { return *s_Instance; }
+        FileExplorerSpecifications& GetSpecifications() { return m_Spec; }
 
         void OnEvent(Event::Event& e);
 

@@ -1,6 +1,8 @@
 #define ENTRY_POINT
 #include <FileExplorer.h>
 
+#include "MainViewPort.h"
+
 namespace FEOS
 {
     class ProgramClinet : public Application
@@ -9,7 +11,7 @@ namespace FEOS
         ProgramClinet(FileExplorerSpecifications spec)
             : Application(spec)
         {
-
+            PushLayer(new ViewPort);
         }
 
         ~ProgramClinet()

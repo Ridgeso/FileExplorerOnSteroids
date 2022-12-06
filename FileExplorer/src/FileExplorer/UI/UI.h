@@ -6,7 +6,6 @@
 
 namespace FEOS
 {
-
     class UI : public Layer
     {
     public:
@@ -19,13 +18,10 @@ namespace FEOS
 
         void Begin();
         void End();
+        virtual void OnUIDraw() override;
     
         void SetTheme();
 
     private:
-        // Tests
-        bool m_ShowDemo = true;
-        bool m_ShowAnotherWindow = true;
     }; 
-
 }
