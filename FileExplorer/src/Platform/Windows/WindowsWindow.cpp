@@ -67,12 +67,8 @@ namespace FEOS
 
     void WindowsWindow::OnUpdate()
     {
-        // glClear(GL_COLOR_BUFFER_BIT);
-        // glClearColor(0.1, 0.1, 0.1, 1.0);
-
-        glfwSwapBuffers(m_GlfwWindow);
-
         glfwPollEvents();
+        glfwSwapBuffers(m_GlfwWindow);
     }
 
     //////////////// CALLBAKCS ////////////////

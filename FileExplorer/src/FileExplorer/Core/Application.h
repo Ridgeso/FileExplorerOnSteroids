@@ -10,10 +10,29 @@
 
 namespace FEOS
 {
+    struct FileExplorerCommandLineArgs
+    {
+        int32_t Count;
+        char** Args;
+
+        const char* operator[](int32_t ind) const
+        {
+            FEOS_EXPLORER_ASSERT(ind < Count);
+            return Args[ind];
+        }
+    };
+    
+    struct FileExplorerSpecifications
+    {
+        std::string Name;
+        std::string CurrentDirectory;
+        FileExplorerCommandLineArgs CommandLineArgs;
+    };
+    
     class Application
     {
     public:
-        Application();
+        Application(FileExplorerSpecifications spec);
         virtual ~Application();
 
         Window& GetWindow() { return *m_Window; }
@@ -30,6 +49,7 @@ namespace FEOS
         bool OnWindowClose(Event::WindowClose& e);
 
     private:
+        FileExplorerSpecifications m_Spec;
         bool m_IsRunning = true;
         Local<Window> m_Window;
         LayerStack m_LayerStack;
@@ -38,5 +58,5 @@ namespace FEOS
     };
 
     // To be defined in CLIENT
-    Application* CreateApplication();
+    Application* CreateApplication(FileExplorerCommandLineArgs args);
 }

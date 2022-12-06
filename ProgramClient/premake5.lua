@@ -15,8 +15,12 @@ project "ProgramClient"
 
     includedirs
     {
+        "%{wks.location}/ProgramClient/src",
+
         "%{wks.location}/FileExplorer/src",
-        "%{wks.location}/FileExplorer/dependencies/spdlog/include"
+        "%{wks.location}/FileExplorer/dependencies/GLFW/include";
+        "%{wks.location}/FileExplorer/dependencies/spdlog/include";
+        "%{wks.location}/FileExplorer/dependencies/imgui"
     }
 
     links

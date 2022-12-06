@@ -9,7 +9,9 @@ namespace FEOS
     class Layer
     {       
     public:
-        Layer(const std::string& name = "Layer");
+        Layer(const std::string& name = "Layer")
+            : m_Name(name)
+        { }
         virtual ~Layer() = default;
 
         virtual void OnAttach() {}

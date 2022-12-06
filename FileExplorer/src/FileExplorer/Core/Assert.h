@@ -18,6 +18,6 @@
 #else
     #define FEOS_DEBUGBREAK()
 
-    #define FEOS_CLIENT_ASSERT(...)
+    #define FEOS_EXPLORER_ASSERT(...)
     #define FEOS_ASSERT(...)
 #endif

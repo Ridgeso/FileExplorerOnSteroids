@@ -7,7 +7,8 @@ namespace FEOS
 {
     Application* Application::s_Instance = nullptr;
 
-    Application::Application()
+    Application::Application(FileExplorerSpecifications spec)
+        : m_Spec(spec)
     {
         s_Instance = this;
 

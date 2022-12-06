@@ -6,7 +6,8 @@ namespace FEOS
     class ProgramClinet : public Application
     {
     public:
-        ProgramClinet()
+        ProgramClinet(FileExplorerSpecifications spec)
+            : Application(spec)
         {
 
         }
@@ -20,9 +21,10 @@ namespace FEOS
 
     };
 
-
-    Application* CreateApplication()
+    Application* CreateApplication(FileExplorerCommandLineArgs args)
     {
-        return new ProgramClinet();
+        FileExplorerSpecifications spec = { "File Explorer", "", args };
+        
+        return new ProgramClinet(spec);
     }
 }

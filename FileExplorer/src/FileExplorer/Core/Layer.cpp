@@ -3,11 +3,6 @@
 
 namespace FEOS
 {
-    Layer::Layer(const std::string& name)
-        : m_Name(name)
-    {
-    }
-    
     LayerStack::~LayerStack()
     {
         for(Layer* layer : m_Layers)
@@ -30,7 +25,7 @@ namespace FEOS
 
     void LayerStack::PopLayer(Layer* layer)
     {
-        std::vector<Layer*>::iterator it = std::find(m_Layers.begin(), m_Layers.end(), layer);
+        auto it = LayerPosition(layer);
 
         if (it == m_Layers.begin() + m_LayersCount)
             return;
