@@ -1,7 +1,6 @@
 project "FileExplorer"
     DEP = "dependencies/"
 
-
     kind "StaticLib"
     language "C++"
     cppdialect "C++17"
@@ -10,14 +9,14 @@ project "FileExplorer"
     targetdir ("%{wks.location}/bin/" ..outputdir.. "/%{prj.name}")
     objdir ("%{wks.location}/binInt/" ..outputdir.. "/%{prj.name}")
 
+    pchheader "feospch.h"
+    pchsource "src/feospch.cpp"
+
     files
     {
         "src/**.h",
         "src/**.cpp"
     }
-
-    pchheader "feospch.h"
-    pchsource "FileExplorer/src/feospch.cpp"
 
     includedirs
     {
@@ -35,6 +34,11 @@ project "FileExplorer"
         "spdlog",
         
         "opengl32"
+    }
+
+    defines
+    {
+        "_CRT_SECURE_NO_WARNINGS"
     }
 
     filter "system:windows"

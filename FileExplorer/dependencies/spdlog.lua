@@ -1,30 +1,27 @@
 project "spdlog"
-    LOC = "spdlog/"
-    location (LOC)
     
-
     kind "StaticLib"
     language "C++"
     cppdialect "C++17"
-    staticruntime "On"
+    staticruntime "Off"
     
-    targetdir (LOC .. "bin/" .. outputdir .. "/")
-    objdir (LOC .. "binInt/" .. outputdir .. "/")
+    targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
+    objdir ("%{wks.location}/binInt/" .. outputdir .. "/%{prj.name}")
 
     files
     {
-		LOC .. "src/async.cpp",
-		LOC .. "src/bundled_fmtlib_format.cpp",
-		LOC .. "src/cfg.cpp",
-		LOC .. "src/color_sinks.cpp",
-		LOC .. "src/file_sinks.cpp",
-		LOC .. "src/spdlog.cpp",
-		LOC .. "src/stdout_sinks.cpp"
+		"%{prj.name}/src/async.cpp",
+		"%{prj.name}/src/bundled_fmtlib_format.cpp",
+		"%{prj.name}/src/cfg.cpp",
+		"%{prj.name}/src/color_sinks.cpp",
+		"%{prj.name}/src/file_sinks.cpp",
+		"%{prj.name}/src/spdlog.cpp",
+		"%{prj.name}/src/stdout_sinks.cpp"
     }
 
     includedirs
     {
-        LOC .. "include/"
+        "%{prj.name}/include/"
     }
 
     defines
@@ -37,8 +34,8 @@ project "spdlog"
 
     filter "configurations:Debug"
         runtime "Debug"
-        symbols "on"
+        symbols "On"
     
     filter "configurations:Release"
         runtime "Release"
-        optimize "on"
+        optimize "On"
