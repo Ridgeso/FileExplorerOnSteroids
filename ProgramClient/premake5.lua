@@ -1,4 +1,5 @@
 project "ProgramClient"
+
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++17"
@@ -18,17 +19,22 @@ project "ProgramClient"
         "%{wks.location}/ProgramClient/src",
 
         "%{wks.location}/FileExplorer/src",
-        "%{wks.location}/FileExplorer/dependencies/GLFW/include";
-        "%{wks.location}/FileExplorer/dependencies/spdlog/include";
-        "%{wks.location}/FileExplorer/dependencies/imgui"
+
+        "%{wks.location}/FileExplorer/dependencies/imgui",
+        "%{wks.location}/FileExplorer/dependencies/spdlog/include"
     }
 
     links
     {
         "FileExplorer"
     }
-    filter "action:gmake*"
-        links { "GLFW", "spdlog", "imgui", "opengl32", "gdi32" }
+    -- filter "action:gmake*"
+    --     links { "GLFW", "spdlog", "imgui", "opengl32", "gdi32" }
+ 
+    ignoredefaultlibraries
+    {
+        "LIBCMTD"
+    }
  
     filter "system:windows"
         systemversion "latest"
@@ -40,7 +46,7 @@ project "ProgramClient"
 
     filter "configurations:Debug"
         runtime "Debug"
-        symbols "on"
+        symbols "On"
 
         defines
         {
@@ -49,7 +55,7 @@ project "ProgramClient"
 
     filter "configurations:Release"
         runtime "Release"
-        optimize "on"
+        optimize "On"
 
         defines
         {

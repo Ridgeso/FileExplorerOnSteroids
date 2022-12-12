@@ -1,3 +1,5 @@
+#include "feospch.h"
+
 #include "FileExplorer/Core/Log.h"
 
 #include <spdlog/sinks/stdout_color_sinks.h>

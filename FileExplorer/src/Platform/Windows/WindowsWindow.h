@@ -1,6 +1,6 @@
 #pragma once
-
-#include "feospch.h"
+#include <string>
+#include <cstdint>
 
 #include "FileExplorer/Core/Window.h"
 #include "FileExplorer/Events/Event.h"

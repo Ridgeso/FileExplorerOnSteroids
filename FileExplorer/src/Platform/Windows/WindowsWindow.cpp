@@ -1,4 +1,5 @@
-#define WINDOWS_CALLBACKS
+#include "feospch.h"
+
 #include "Platform/Windows/WindowsWindow.h"
 #include "FileExplorer/Core/Log.h"
 
@@ -157,7 +158,7 @@ namespace FEOS
     {
         WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
-        Event::MouseScrolled event(xOffset, yOffset);
+        Event::MouseScrolled event((float)xOffset, (float)yOffset);
         data.EventCallback(event);
     }
 
@@ -165,7 +166,7 @@ namespace FEOS
     {
         WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
-        Event::MouseMoved event(xPos, yPos);
+        Event::MouseMoved event((float)xPos, (float)yPos);
         data.EventCallback(event);
     }
 }

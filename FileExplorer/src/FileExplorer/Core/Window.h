@@ -1,8 +1,8 @@
 #pragma once
+#include <string>
+#include <cstdint>
 
 #include "FileExplorer/Core/Base.h"
-
-#include "feospch.h"
 #include "FileExplorer/Events/Event.h"
 
 

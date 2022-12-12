@@ -1,20 +1,12 @@
 project "spdlog"
     
-    kind "SharedLib"
-    -- kind "StaticLib"
+    kind "StaticLib"
     language "C++"
     cppdialect "C++17"
-    -- staticruntime "On" -- On if it is StaticLib
-    staticruntime "Off"
+    staticruntime "On"
     
-    -- targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
-    targetdir ("%{wks.location}/bin/" ..outputdir.. "/ProgramClient")
+    targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/binInt/" .. outputdir .. "/%{prj.name}")
-
-    -- postbuildcommands
-    -- {
-    --     "{COPY} %{cfg.buildtarget.relpath} \"%{wks.location}/bin/" .. outputdir.. "/ProgramClient\""
-    -- }
 
     files
     {
@@ -42,8 +34,8 @@ project "spdlog"
 
     filter "configurations:Debug"
         runtime "Debug"
-        symbols "on"
+        symbols "On"
     
     filter "configurations:Release"
         runtime "Release"
-        optimize "on"
+        optimize "On"

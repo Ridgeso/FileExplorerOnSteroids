@@ -1,20 +1,16 @@
 project "FileExplorer"
     DEP = "dependencies/"
 
-    -- kind "SharedLib"
     kind "StaticLib"
     language "C++"
     cppdialect "C++17"
     staticruntime "Off"
 
     targetdir ("%{wks.location}/bin/" ..outputdir.. "/%{prj.name}")
-    -- targetdir ("%{wks.location}/bin/" ..outputdir.. "/ProgramClient")
     objdir ("%{wks.location}/binInt/" ..outputdir.. "/%{prj.name}")
 
-    -- postbuildcommands
-    -- {
-    --     "{COPY} %{cfg.buildtarget.relpath} \"%{wks.location}/bin/" .. outputdir.. "/ProgramClient\""
-    -- }
+    pchheader "feospch.h"
+    pchsource "src/feospch.cpp"
 
     files
     {
@@ -22,17 +18,13 @@ project "FileExplorer"
         "src/**.cpp"
     }
 
-    pchheader "feospch.h"
-    pchsource "FileExplorer/src/feospch.cpp"
-
     includedirs
     {
         "src",
         DEP .. "GLFW/include",
         DEP .. "imgui",
-        DEP .. "spdlog/include",
 
-        "fileManager"
+        DEP .. "spdlog/include"
     }
 
     links
@@ -44,6 +36,11 @@ project "FileExplorer"
         "FileManager",
         
         "opengl32"
+    }
+
+    defines
+    {
+        "_CRT_SECURE_NO_WARNINGS"
     }
 
     filter "system:windows"
@@ -60,8 +57,7 @@ project "FileExplorer"
 
         defines
         {
-            "FILE_EXPLORER_DEBUG",
-            "GLFW_DLL"
+            "FILE_EXPLORER_DEBUG"
         }
 
     filter "configurations:Release"

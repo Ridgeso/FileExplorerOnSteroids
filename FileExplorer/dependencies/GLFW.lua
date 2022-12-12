@@ -1,26 +1,18 @@
 project "GLFW"
-    
-    kind "SharedLib"
-    -- kind "StaticLib"
+
+    kind "StaticLib"
     language "C"
-    -- staticruntime "On" -- On if it is StaticLib
-    staticruntime "Off"
-
-    -- targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
-    targetdir ("%{wks.location}/bin/" ..outputdir.. "/ProgramClient")
+    staticruntime "On"
+    
+    targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/binInt/" .. outputdir .. "/%{prj.name}")
-
-    -- postbuildcommands
-    -- {
-    --     ("{COPY} %{cfg.buildtarget.relpath} \"%{wks.location}/bin/" .. outputdir.. "/ProgramClient\"")
-    -- }
 
     files
     {
         "%{prj.name}/include/GLFW/glfw3.h",
         "%{prj.name}/include/GLFW/glfw3native.h",
         "%{prj.name}/src/glfw_config.h",
-    
+
         "%{prj.name}/src/context.c",
         "%{prj.name}/src/init.c",
         "%{prj.name}/src/input.c",
@@ -41,15 +33,8 @@ project "GLFW"
     {
         "%{prj.name}/include"
     }
-    filter "action:gmake*"   
-        includedirs { "%{prj.name}/deps/mingw" }
-    
-    links
-    {
-        "gdi32"
-    }
-
-    buildoptions { "-Wall" }
+    -- filter "action:gmake*"
+    --     includedirs { "%{prj.name}/deps/mingw" }
 
     filter "system:windows"
         systemversion "latest"
@@ -57,8 +42,7 @@ project "GLFW"
         defines
         {
             "_GLFW_WIN32",
-            "_CRT_SECURE_NO_WARNINGS",
-            "GLFW_BUILD_DLL"
+            "_CRT_SECURE_NO_WARNINGS"
         }
 
         files
@@ -76,8 +60,8 @@ project "GLFW"
 
     filter "configurations:Debug"
         runtime "Debug"
-        symbols "on"
+        symbols "On"
     
     filter "configurations:Release"
         runtime "Release"
-        optimize "on"
+        optimize "On"

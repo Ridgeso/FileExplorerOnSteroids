@@ -1,5 +1,6 @@
-#include "FileExplorer/Core/Window.h"
+#include "feospch.h"
 
+#include "FileExplorer/Core/Window.h"
 #include "Platform/Windows/WindowsWindow.h"
 
 
