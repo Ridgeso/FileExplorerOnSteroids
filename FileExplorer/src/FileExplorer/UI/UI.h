@@ -18,7 +18,6 @@ namespace FEOS
 
         void Begin();
         void End();
-        virtual void OnUIDraw() override;
     
         void SetTheme();
 

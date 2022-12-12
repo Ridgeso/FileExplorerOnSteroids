@@ -25,7 +25,6 @@ namespace FEOS
     struct FileExplorerSpecifications
     {
         std::string Name;
-        std::string CurrentDirectory;
         FileExplorerCommandLineArgs CommandLineArgs;
     };
     
@@ -48,10 +47,14 @@ namespace FEOS
         
     private:
         bool OnWindowClose(Event::WindowClose& e);
+        bool OnWindowResize(Event::WindowResize& e);
 
     private:
         FileExplorerSpecifications m_Spec;
+
         bool m_IsRunning = true;
+        bool m_Minimized = false;
+        
         Local<Window> m_Window;
         LayerStack m_LayerStack;
         UI* m_UI;

@@ -25,7 +25,7 @@ namespace FEOS
 
     Application* CreateApplication(FileExplorerCommandLineArgs args)
     {
-        FileExplorerSpecifications spec = { "File Explorer", "", args };
+        FileExplorerSpecifications spec = { "File Explorer", args };
         
         return new ProgramClinet(spec);
     }

@@ -1,14 +1,20 @@
 project "FileExplorer"
     DEP = "dependencies/"
 
-
+    -- kind "SharedLib"
     kind "StaticLib"
     language "C++"
     cppdialect "C++17"
     staticruntime "Off"
 
     targetdir ("%{wks.location}/bin/" ..outputdir.. "/%{prj.name}")
+    -- targetdir ("%{wks.location}/bin/" ..outputdir.. "/ProgramClient")
     objdir ("%{wks.location}/binInt/" ..outputdir.. "/%{prj.name}")
+
+    -- postbuildcommands
+    -- {
+    --     "{COPY} %{cfg.buildtarget.relpath} \"%{wks.location}/bin/" .. outputdir.. "/ProgramClient\""
+    -- }
 
     files
     {
@@ -24,8 +30,9 @@ project "FileExplorer"
         "src",
         DEP .. "GLFW/include",
         DEP .. "imgui",
+        DEP .. "spdlog/include",
 
-        DEP .. "spdlog/include"
+        "fileManager"
     }
 
     links
@@ -33,6 +40,8 @@ project "FileExplorer"
         "GLFW",
         "imgui",
         "spdlog",
+
+        "FileManager",
         
         "opengl32"
     }
@@ -51,7 +60,8 @@ project "FileExplorer"
 
         defines
         {
-            "FILE_EXPLORER_DEBUG"
+            "FILE_EXPLORER_DEBUG",
+            "GLFW_DLL"
         }
 
     filter "configurations:Release"

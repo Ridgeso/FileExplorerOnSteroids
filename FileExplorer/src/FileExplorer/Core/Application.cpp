@@ -28,6 +28,7 @@ namespace FEOS
         Event::Dispatcher dispatcher(e);
 
         dispatcher.Dispatch<Event::WindowClose>(FEOS_EVENT_FN(Application::OnWindowClose));
+        dispatcher.Dispatch<Event::WindowResize>(FEOS_EVENT_FN(Application::OnWindowResize));
 
         const std::vector<Layer*>& layerStack = m_LayerStack.GetStack();
         for (auto it = layerStack.rbegin(); it != layerStack.rend(); ++it)
@@ -76,5 +77,17 @@ namespace FEOS
     {
         m_IsRunning = false;
         return true;
+    }
+    
+    bool Application::OnWindowResize(Event::WindowResize& e)
+    {
+        if (e.GetWidth() == 0 && e.GetHeight() == 0)
+        {
+            m_Minimized = true;
+            return false;
+        }
+
+        m_Minimized = false;
+        return false;
     }
 }

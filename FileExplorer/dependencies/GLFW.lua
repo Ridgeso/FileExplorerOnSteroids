@@ -1,43 +1,55 @@
 project "GLFW"
-    LOC = "GLFW/"
-    location (LOC)
     
-
-    kind "StaticLib"
+    kind "SharedLib"
+    -- kind "StaticLib"
     language "C"
-    staticruntime "On"
-    
-    targetdir (LOC .. "bin/" .. outputdir .. "/")
-    objdir (LOC .. "binInt/" .. outputdir .. "/")
+    -- staticruntime "On" -- On if it is StaticLib
+    staticruntime "Off"
+
+    -- targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
+    targetdir ("%{wks.location}/bin/" ..outputdir.. "/ProgramClient")
+    objdir ("%{wks.location}/binInt/" .. outputdir .. "/%{prj.name}")
+
+    -- postbuildcommands
+    -- {
+    --     ("{COPY} %{cfg.buildtarget.relpath} \"%{wks.location}/bin/" .. outputdir.. "/ProgramClient\"")
+    -- }
 
     files
     {
-        LOC .. "include/GLFW/glfw3.h",
-        LOC .. "include/GLFW/glfw3native.h",
-        LOC .. "src/glfw_config.h",
+        "%{prj.name}/include/GLFW/glfw3.h",
+        "%{prj.name}/include/GLFW/glfw3native.h",
+        "%{prj.name}/src/glfw_config.h",
     
-        LOC .. "src/context.c",
-        LOC .. "src/init.c",
-        LOC .. "src/input.c",
-        LOC .. "src/monitor.c",
-        LOC .. "src/platform.c",
-        LOC .. "src/vulkan.c",
-        LOC .. "src/window.c",
-        LOC .. "src/egl_context.c",
-        LOC .. "src/osmesa_context.c",
+        "%{prj.name}/src/context.c",
+        "%{prj.name}/src/init.c",
+        "%{prj.name}/src/input.c",
+        "%{prj.name}/src/monitor.c",
+        "%{prj.name}/src/platform.c",
+        "%{prj.name}/src/vulkan.c",
+        "%{prj.name}/src/window.c",
+        "%{prj.name}/src/egl_context.c",
+        "%{prj.name}/src/osmesa_context.c",
 
-        LOC .. "src/null_init.c",
-        LOC .. "src/null_monitor.c",
-        LOC .. "src/null_window.c",
-        LOC .. "src/null_joystick.c"
+        "%{prj.name}/src/null_init.c",
+        "%{prj.name}/src/null_monitor.c",
+        "%{prj.name}/src/null_window.c",
+        "%{prj.name}/src/null_joystick.c"
     }
 
     includedirs
     {
-        LOC .. "include"
+        "%{prj.name}/include"
     }
     filter "action:gmake*"   
-        includedirs { LOC .. "deps/mingw" }
+        includedirs { "%{prj.name}/deps/mingw" }
+    
+    links
+    {
+        "gdi32"
+    }
+
+    buildoptions { "-Wall" }
 
     filter "system:windows"
         systemversion "latest"
@@ -45,20 +57,21 @@ project "GLFW"
         defines
         {
             "_GLFW_WIN32",
-            "_CRT_SECURE_NO_WARNINGS"
+            "_CRT_SECURE_NO_WARNINGS",
+            "GLFW_BUILD_DLL"
         }
 
         files
         {
-            LOC .. "src/win32_module.c",
-            LOC .. "src/win32_time.c",
-            LOC .. "src/win32_thread.c",
+            "%{prj.name}/src/win32_module.c",
+            "%{prj.name}/src/win32_time.c",
+            "%{prj.name}/src/win32_thread.c",
 
-            LOC .. "src/win32_init.c",
-            LOC .. "src/win32_joystick.c",
-            LOC .. "src/win32_monitor.c",
-            LOC .. "src/win32_window.c",
-            LOC .. "src/wgl_context.c"
+            "%{prj.name}/src/win32_init.c",
+            "%{prj.name}/src/win32_joystick.c",
+            "%{prj.name}/src/win32_monitor.c",
+            "%{prj.name}/src/win32_window.c",
+            "%{prj.name}/src/wgl_context.c"
         }
 
     filter "configurations:Debug"

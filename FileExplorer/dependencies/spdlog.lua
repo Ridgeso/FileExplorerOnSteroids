@@ -1,30 +1,35 @@
 project "spdlog"
-    LOC = "spdlog/"
-    location (LOC)
     
-
-    kind "StaticLib"
+    kind "SharedLib"
+    -- kind "StaticLib"
     language "C++"
     cppdialect "C++17"
-    staticruntime "On"
+    -- staticruntime "On" -- On if it is StaticLib
+    staticruntime "Off"
     
-    targetdir (LOC .. "bin/" .. outputdir .. "/")
-    objdir (LOC .. "binInt/" .. outputdir .. "/")
+    -- targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
+    targetdir ("%{wks.location}/bin/" ..outputdir.. "/ProgramClient")
+    objdir ("%{wks.location}/binInt/" .. outputdir .. "/%{prj.name}")
+
+    -- postbuildcommands
+    -- {
+    --     "{COPY} %{cfg.buildtarget.relpath} \"%{wks.location}/bin/" .. outputdir.. "/ProgramClient\""
+    -- }
 
     files
     {
-		LOC .. "src/async.cpp",
-		LOC .. "src/bundled_fmtlib_format.cpp",
-		LOC .. "src/cfg.cpp",
-		LOC .. "src/color_sinks.cpp",
-		LOC .. "src/file_sinks.cpp",
-		LOC .. "src/spdlog.cpp",
-		LOC .. "src/stdout_sinks.cpp"
+		"%{prj.name}/src/async.cpp",
+		"%{prj.name}/src/bundled_fmtlib_format.cpp",
+		"%{prj.name}/src/cfg.cpp",
+		"%{prj.name}/src/color_sinks.cpp",
+		"%{prj.name}/src/file_sinks.cpp",
+		"%{prj.name}/src/spdlog.cpp",
+		"%{prj.name}/src/stdout_sinks.cpp"
     }
 
     includedirs
     {
-        LOC .. "include/"
+        "%{prj.name}/include/"
     }
 
     defines

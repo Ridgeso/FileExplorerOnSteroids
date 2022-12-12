@@ -5,7 +5,7 @@
 #ifdef FILE_EXPLORER_DEBUG
     #define FEOS_DEBUGBREAK() __debugbreak()
 
-    #define FEOS_ASSERT_IMPL(type, cond, msg, ...) { if (!cond) { FEOS##type##ERROR(msg, __VA_ARGS__); FEOS_DEBUGBREAK(); } }
+    #define FEOS_ASSERT_IMPL(type, cond, msg, ...) { if (!(cond)) { FEOS##type##ERROR(msg, __VA_ARGS__); FEOS_DEBUGBREAK(); } }
     #define FEOS_ASSERT_IMPL_WITH_MSG(type, cond, ...) FEOS_ASSERT_IMPL(type, cond, "Assertion: {0}", __VA_ARGS__)
     #define FEOS_ASSERT_IMPL_NO_MSG(type, cond, ...) FEOS_ASSERT_IMPL(type, cond, "Assertion ({0}): file {1}:{2}", #cond, __FILE__, __LINE__)
 
