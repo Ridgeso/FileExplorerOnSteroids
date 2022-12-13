@@ -8,6 +8,7 @@
 #include "FileExplorer/Events/ApplicationEvent.h"
 #include "FileExplorer/Core/Layer.h"
 #include "FileExplorer/UI/UI.h"
+#include "FileExplorer/FileManager/Manager.h"
 
 
 namespace FEOS
@@ -60,6 +61,7 @@ namespace FEOS
         Local<Window> m_Window;
         LayerStack m_LayerStack;
         UI* m_UI;
+        Local<Files::Manager> m_FileManager;
         static Application* s_Instance;
     };
 

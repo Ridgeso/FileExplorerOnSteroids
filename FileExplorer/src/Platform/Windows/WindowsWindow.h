@@ -18,7 +18,7 @@ namespace FEOS
 
         void OnUpdate() override;
 
-        virtual void* GetNativeWindow() const { return m_GlfwWindow; } 
+        void* GetNativeWindow() const override { return m_GlfwWindow; } 
 
         const std::string& GetTitle() const { return m_Data.Title; }
         uint32_t GetWidth() const override { return m_Data.Width; }

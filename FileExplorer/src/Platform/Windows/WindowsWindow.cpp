@@ -1,7 +1,7 @@
 #include "feospch.h"
 
+#include <windows.h>
 #include "Platform/Windows/WindowsWindow.h"
-#include "FileExplorer/Core/Log.h"
 
 #include "FileExplorer/Events/ApplicationEvent.h"
 #include "FileExplorer/Events/KeyEvent.h"
