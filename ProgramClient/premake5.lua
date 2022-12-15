@@ -28,8 +28,9 @@ project "ProgramClient"
     {
         "FileExplorer"
     }
-    -- filter "action:gmake*"
-    --     links { "GLFW", "spdlog", "imgui", "opengl32", "gdi32" }
+
+    filter "action:gmake*"
+        links { "GLFW", "spdlog", "imgui", "opengl32", "gdi32" }
  
     ignoredefaultlibraries
     {

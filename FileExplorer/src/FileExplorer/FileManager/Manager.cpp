@@ -6,7 +6,7 @@
 namespace FEOS::Files
 {
     Manager::Manager(const Path& path)
-        : m_CurrentPath(path)
+        : m_CurrentPath(path) //, fs::path::native_format)
     {
     }
     
@@ -18,10 +18,10 @@ namespace FEOS::Files
     {
         return CreateLocal<WindowsManager>(path);
     }
-}
 
-std::ostream& operator<<(std::ostream& os, const FEOS::Files::File& file)
-{
-    std::cout << "File[size: " << file.size << ", path: " << file.path << "]" << std::endl;
-    return os;
+    std::ostream& operator<<(std::ostream& os, const File& file)
+    {
+        os << "File " << file.name << "[size: " << file.size << ", path: " << file.path << "]" << std::endl;
+        return os;
+    }
 }

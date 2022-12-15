@@ -6,13 +6,13 @@ namespace FEOS::Event
 {
     #define FEOS_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
 
-    #define EVENT_CLASS_TYPE(type)                                                  \
-            static EventType GetStaticType() { return EventType::type; }            \
-            virtual EventType GetType() const override { return GetStaticType(); }  \
-            virtual const char* GetName() const override { return #type; }
+    #define EVENT_CLASS_TYPE(type)                                          \
+            static EventType GetStaticType() { return EventType::type; }    \
+            EventType GetType() const override { return GetStaticType(); }  \
+            const char* GetName() const override { return #type; }
 
     #define EVENT_CLASS_CATEGORY(category) \
-            virtual EventCategory GetCategory() const override { return category; }
+            EventCategory GetCategory() const override { return category; }
     
     #define EVENT_TO_STRING(output)                 \
             std::string ToString() const override   \
