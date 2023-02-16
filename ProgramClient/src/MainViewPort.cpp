@@ -36,6 +36,7 @@ namespace FEOS
     void ViewPort::OnUIDraw()
     {
         FEOS_EXPLORER_ASSERT(ImGui::GetCurrentContext() != nullptr, "Missing dear imgui context. Refer to examples app!");
+        static Files::Manager& appFileManager = Application::Get().GetFileManager();
 
         static bool dockspaceOpen = true;
         static bool fullScreen = true;
@@ -81,11 +82,11 @@ namespace FEOS
         static bool showDemo = true;
         ImGui::ShowDemoWindow(&showDemo);
 
+        static bool showNavigationBar = true;
         static bool showExplorer = true;
-        static bool showContent = true;
         static bool showFooter = true;
 
-        if (ImGui::BeginMainMenuBar()) // <- Menu Bar
+        if (ImGui::BeginMainMenuBar()) // <- Nav Bar
         {   
             if (ImGui::BeginMenu("Organize"))
             {
@@ -130,21 +131,139 @@ namespace FEOS
             ImGui::EndMainMenuBar();
         }
 
-        if (showExplorer) // <- Explorer
+        if (showNavigationBar) // <- Nav Bar
         {
-            static ImGuiWindowFlags explorerFlags = ImGuiWindowFlags_None;
-            ImGui::Begin("Explorer", &showExplorer, explorerFlags);
-                ImGui::Text("Explorer");
+            static ImGuiWindowFlags navigationFlags = ImGuiWindowFlags_None;
+            ImGui::Begin("NavigationBar", &showNavigationBar, navigationFlags);
+                ImGui::Text("Navigation Bar");
             ImGui::End();
         }
         
-        // Main Content
-        static ImGuiWindowFlags contentFlags =
-              ImGuiWindowFlags_NoMove
-            | ImGuiWindowFlags_NoCollapse;
-        ImGui::Begin("Content", &showContent, contentFlags);
-            ImGui::Text("Content");
+        ////// Explorer //////
+        static Files::File* selectedFile = nullptr;
+        static float horizontalPadding = 16.0f;
+        static float verticalPadding = 16.0f;
+        static float thumbnailSize = 128.0f;
+        float horizontalCellSize = thumbnailSize + horizontalPadding;
+        float verticalCellSize = thumbnailSize + verticalPadding;
+        float panelWidth = ImGui::GetContentRegionAvail().x;
+        float panelHeight = ImGui::GetContentRegionAvail().y;
+        int columnCount = std::max((int)(panelWidth / horizontalCellSize), 1);
+        
+        static ImGuiWindowFlags explorerFlags = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse;
+        ImGui::Begin("Explorer", &showExplorer, explorerFlags);
+            ImGui::Columns(columnCount, 0, false); 
+            bool wasAnyFileClicked = false;
+
+            // Listing all files
+            Files::FileList allFilesInDirectory = appFileManager.GetAllFiles();
+            auto fileIt = allFilesInDirectory.begin();
+            // for (Files::File content : appFileManager.GetAllFiles())
+            for (fileIt; fileIt != allFilesInDirectory.end(); fileIt++)
+            {
+                // ImGui::Button(content.name.c_str(), { horizontalCellSize, verticalCellSize });
+                // if (selectedFile == &content)
+                //     ImGui::PushStyleColor(ImGuiCol_Button, style.Colors[ImGuiCol_ButtonHovered]);
+                // ImGui::Button(content.name.c_str(), { thumbnailSize, thumbnailSize });
+                ImGui::Button((*fileIt).name.c_str(), { thumbnailSize, thumbnailSize });
+                if (ImGui::IsItemHovered())
+                {
+                    if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+                    {
+                        wasAnyFileClicked = true;
+                        FEOS_INFO("Selected file {}", (*fileIt).name.c_str());
+                        selectedFile = &(*fileIt);
+                    }
+                    else if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
+                    {
+                        wasAnyFileClicked = true;
+                        FEOS_INFO("Right Clicked at {}", (*fileIt).name.c_str());
+                        selectedFile = &(*fileIt);
+                        ImGui::OpenPopup("RightClickFileMenu");
+                    }
+
+                    if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+                    {
+                        wasAnyFileClicked = true;
+                        FEOS_INFO("Double Clicked at {}", (*fileIt).name.c_str());
+                    }
+                }
+                ImGui::Text((*fileIt).name.c_str());
+                
+                // if (selectedFile == &content)
+                //     ImGui::PopStyleColor();
+                if (selectedFile)
+                    // FEOS_DEBUG("selectedFile{}", selectedFile->name);
+                    FEOS_DEBUG("selectedFile({}) == &content({}) {}", selectedFile->name, (*fileIt).name, selectedFile == &(*fileIt));
+                ImGui::NextColumn();
+                // ImGui::PopID();
+            }
+            
+            if (!wasAnyFileClicked)
+            {
+                if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+                {
+                    FEOS_INFO("Left Clicked at Explorer");
+                    selectedFile = nullptr;
+                }
+                else if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
+                {
+                    FEOS_INFO("Right Clicked at Explorer");
+                    selectedFile = nullptr;
+                    ImGui::OpenPopup("RightClickMenu");
+                }
+            }
+            
+            if (ImGui::BeginPopup("RightClickFileMenu"))
+            {
+                if (ImGui::BeginMenu("View"))
+                {
+                    ImGui::EndMenu();
+                }
+                if (ImGui::BeginMenu("Group by"))
+                {
+                    ImGui::EndMenu();
+                }
+                ImGui::Separator();
+                if (ImGui::Button("Cut")) { }
+                if (ImGui::Button("Move")) { }
+                ImGui::Separator();
+                if (ImGui::Button("Rename")) { }
+                ImGui::EndPopup();
+            }
+            else if (ImGui::BeginPopup("RightClickMenu"))
+            {
+                if (ImGui::BeginMenu("View"))
+                {
+                    ImGui::EndMenu();
+                }
+                if (ImGui::BeginMenu("Group by"))
+                {
+                    ImGui::EndMenu();
+                }
+                ImGui::Separator();
+                // if (ImGui::Button("Paste", false, false)) { }
+                if (ImGui::Button("Paste")) { }
+                ImGui::Separator();
+                if (ImGui::BeginMenu("Group by"))
+                {
+                    ImGui::EndMenu();
+                }
+                if (ImGui::BeginMenu("Create new"))
+                {
+                    if (ImGui::Button("Directory")) { }
+                    if (ImGui::Button("File")) { }
+                    ImGui::EndMenu();
+                }
+                ImGui::EndPopup();
+            }
+
+            ImGui::Columns(1, 0, false);
+            ImGui::SliderFloat("Thumbnail Size", &thumbnailSize, 16, 512);
+		    ImGui::SliderFloat("Horizontal Padding", &horizontalPadding, 0, 32);
+		    ImGui::SliderFloat("Vertical Padding", &verticalPadding, 0, 32);
         ImGui::End();
+        ////////////
 
         if (showFooter) // <- Footer
         {

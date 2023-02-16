@@ -37,8 +37,9 @@ namespace FEOS
         Application(FileExplorerSpecifications spec);
         virtual ~Application();
 
-        Window& GetWindow() { return *m_Window; }
+        Window& GetWindow() const { return *m_Window; }
         static Application& Get() { return *s_Instance; }
+        Files::Manager& GetFileManager() const { return *m_FileManager; }
         FileExplorerSpecifications& GetSpecifications() { return m_Spec; }
 
         void OnEvent(Event::Event& e);

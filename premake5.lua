@@ -1,7 +1,8 @@
 workspace "FileExplorerOnSteroids"
+
     startproject "ProgramClient"
     configurations { "Debug", "Release" }
-    platforms { "Win32", "Win64" }
+    platforms { "Win64", "Win32" }
 
     flags
     {
