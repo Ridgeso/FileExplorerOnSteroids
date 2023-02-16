@@ -6,7 +6,7 @@
 namespace FEOS::Files
 {
     Manager::Manager(const Path& path)
-        : m_CurrentPath(path) //, fs::path::native_format)
+        : m_CurrentPath(path)
     {
     }
     
@@ -21,7 +21,7 @@ namespace FEOS::Files
 
     std::ostream& operator<<(std::ostream& os, const File& file)
     {
-        os << "File " << file.name << "[size: " << file.size << ", path: " << file.path << "]" << std::endl;
+        os << "File \"" << file.name << "\"[size: " << file.size << ", path: " << file.path.string() << "]" << std::endl;
         return os;
     }
 }

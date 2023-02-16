@@ -43,7 +43,7 @@ namespace FEOS::Files
 
         virtual File GetFileByName(const Path& fileName, bool recursive) const = 0;
 
-        virtual void CreateFile_(const Path& fileName) const = 0;
+        virtual File CreateFile_(const Path& fileName) const = 0;
         virtual void CreateFolder(const Path& folderName) const = 0;
 
         virtual void DeleteFile_(const Path& filePath) const = 0;
