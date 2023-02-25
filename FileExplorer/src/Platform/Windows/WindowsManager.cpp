@@ -3,6 +3,7 @@
 #include "Platform/Windows/WindowsManager.h"
 
 #include <windows.h>
+#include <shlwapi.h>
 #include <dirent.h>
 #include <filesystem>
 
@@ -10,9 +11,13 @@
 namespace FEOS::Files
 {
     WindowsManager::WindowsManager(const Path& path)
-        : Manager(path)
+        : m_CurrentPath(path)
     {
-        FEOS_LOG_TRACE("Manager Initialized at path: {}", path);
+        FEOS_EXPLORER_ASSERT(!m_CurrentPath.empty(), "There is no path to the root!");
+        while (m_CurrentPath != m_CurrentPath.root_path() && !DoesPathExists(m_CurrentPath))
+            m_CurrentPath = m_CurrentPath.parent_path();
+        FEOS_EXPLORER_ASSERT(DoesPathExists(m_CurrentPath), "Root doesn't exists!");
+        FEOS_LOG_TRACE("Manager Initialized at path: {}", m_CurrentPath);
 
         FileList filesInRoot = GetAllFiles();
         for (File file : filesInRoot)
@@ -66,7 +71,7 @@ namespace FEOS::Files
         return targetFile;
     }
 
-        
+    
     File WindowsManager::CreateFile_(const Path& fileName) const 
     {
         Path filePath = GetCurrentPath() / fileName;
@@ -74,7 +79,7 @@ namespace FEOS::Files
         HANDLE h = CreateFile(
             filePath.string().c_str(),
             GENERIC_READ | GENERIC_WRITE,
-            FILE_SHARE_VALID_FLAGS,
+            FILE_SHARE_READ | FILE_SHARE_READ | FILE_SHARE_DELETE,
             nullptr,
             CREATE_NEW,
             FILE_ATTRIBUTE_NORMAL,
@@ -109,7 +114,7 @@ namespace FEOS::Files
     {
         Path newFileLocation = movedFilePath / file.name;
 
-        WINBOOL succeds = MoveFile(file.path.string().c_str(), newFileLocation.string().c_str());
+        bool succeds = MoveFile(file.path.string().c_str(), newFileLocation.string().c_str());
         
         if (succeds == true)
         {
@@ -129,9 +134,9 @@ namespace FEOS::Files
 
         if (file.path == copyFileLocation)
         {
-            WIN32_FIND_DATA data;
-            GET_FILEEX_INFO_LEVELS fileExInfo;
-            WINBOOL nthCopyExists;
+            WIN32_FIND_DATA data = {};
+            GET_FILEEX_INFO_LEVELS fileExInfo = GetFileExMaxInfoLevel;
+            BOOL nthCopyExists;
 
             int filesWithSameName = 1;
             std::stringstream copyState(file.path.stem().string());
@@ -151,7 +156,7 @@ namespace FEOS::Files
             while (nthCopyExists != INVALID_FILE_ATTRIBUTES);
         }
 
-        WINBOOL succeds = CopyFile(file.path.string().c_str(), copyFileLocation.string().c_str(), TRUE);
+        bool succeds = CopyFile(file.path.string().c_str(), copyFileLocation.string().c_str(), TRUE);
     }
 
     void WindowsManager::CopyFolder(const File& folder, const Path& copyFolderPath) const
@@ -180,17 +185,17 @@ namespace FEOS::Files
         bool system = attributes & FILE_ATTRIBUTE_SYSTEM;
         bool readonly = attributes & FILE_ATTRIBUTE_READONLY;
         bool visible = attributes & FILE_ATTRIBUTE_HIDDEN;
-        uint32_t size = type != FileType::Folder ? fs::file_size(direntPath) : 0;
+        uint64_t size = type != FileType::Folder ? fs::file_size(direntPath) : 0;
 
         return File{ type, system, readonly, visible, size, direntPath.filename().string(), direntPath };
     }
 
     File WindowsManager::ParseFile(const Path& filePath) const
     {
-        WIN32_FIND_DATA data;
-        GET_FILEEX_INFO_LEVELS fileExInfo;
+        WIN32_FIND_DATA data = {};
+        GET_FILEEX_INFO_LEVELS fileExInfo = GetFileExMaxInfoLevel;
         
-        WINBOOL foundAttrib = GetFileAttributesEx(filePath.string().c_str(), fileExInfo, &data);
+        bool foundAttrib = GetFileAttributesEx(filePath.string().c_str(), fileExInfo, &data);
 
         if (foundAttrib == INVALID_FILE_ATTRIBUTES)
         {
@@ -206,6 +211,12 @@ namespace FEOS::Files
         
         // FindClose(file);
         return File{ type, system, readonly, visible, (uint64_t)size.QuadPart, filePath.filename().string(), filePath };
+    }
+
+
+    static bool DoesPathExists(const Path& path)
+    {
+        return PathFileExists(path.string().c_str()) == true;
     }
 
     static FileType MachFilesystemFileTypeToFEOSFileType(fs::file_status filesystemStatus)

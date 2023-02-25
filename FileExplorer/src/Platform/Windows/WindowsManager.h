@@ -15,6 +15,9 @@ namespace FEOS::Files
         WindowsManager(const Path& path = ":Libraries:");
         ~WindowsManager();
 
+        const Path& GetCurrentPath() const { return m_CurrentPath; }
+        void SetCurrentPath(const Path& newPath) { m_CurrentPath = newPath; }
+
         FileList GetAllFilesFromDirectory(const Path& dirPath) const override;
 
         File GetFileByName(const Path& fileName, bool recursive = false) const override;
@@ -37,8 +40,12 @@ namespace FEOS::Files
     private:
         File direntToFile(const Path& direntPath) const;
         File ParseFile(const Path& filePath) const;
+
+    private:
+        Path m_CurrentPath;
     };
 
+    static bool DoesPathExists(const Path& path);
     static FileType MachFilesystemFileTypeToFEOSFileType(const fs::file_status filesystemStatus);
     static FileType MachWindowsAttributeToFEOSFileType(DWORD attribute);
     static File InvalideFile();

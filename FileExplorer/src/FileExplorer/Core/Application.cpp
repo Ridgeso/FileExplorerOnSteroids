@@ -18,7 +18,7 @@ namespace FEOS
         m_UI = new UI;
         PushOverlay(m_UI);
 
-        m_FileManager = Files::Create(std::filesystem::current_path());
+        m_FileManager = Files::Create(Files::fs::current_path());
     }
 
     Application::~Application()

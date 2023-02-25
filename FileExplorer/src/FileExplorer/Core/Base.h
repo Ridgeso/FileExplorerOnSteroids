@@ -4,6 +4,9 @@
     #error Only windows is supported
 #endif
 
+#define EXPEND(macro) macro
+#define STRINGIFY(macro) #macro
+
 #include <memory>
 
 namespace FEOS

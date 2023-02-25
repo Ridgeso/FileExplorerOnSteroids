@@ -35,11 +35,13 @@ namespace FEOS::Files
     class Manager
     {
     public:
-        Manager(const Path& path);
         virtual ~Manager();
 
+        virtual const Path& GetCurrentPath() const = 0;
+        virtual void SetCurrentPath(const Path& newPath) = 0;
+
         virtual FileList GetAllFilesFromDirectory(const Path& dirPath) const = 0;
-        FileList GetAllFiles() const { return GetAllFilesFromDirectory(m_CurrentPath); }
+        FileList GetAllFiles() const { return GetAllFilesFromDirectory(GetCurrentPath()); }
 
         virtual File GetFileByName(const Path& fileName, bool recursive) const = 0;
 
@@ -57,12 +59,6 @@ namespace FEOS::Files
 
         virtual void RenameFile_(const Path& fileName, const Path& renamedFileName) const = 0;
         virtual void RenameFolder(const Path& folderName, const Path& renamedFolderName) const = 0;
-
-        const Path& GetCurrentPath() const { return m_CurrentPath; }
-        void SetCurrentPath(const Path& newPath) { m_CurrentPath = newPath; }
-
-    private:
-        Path m_CurrentPath;
     };
 
     Local<Manager> Create(const Path& path);

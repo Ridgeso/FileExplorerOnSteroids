@@ -5,11 +5,6 @@
 
 namespace FEOS::Files
 {
-    Manager::Manager(const Path& path)
-        : m_CurrentPath(path)
-    {
-    }
-    
     Manager::~Manager()
     {
     }

@@ -32,11 +32,6 @@ project "ProgramClient"
     filter "action:gmake*"
         links { "GLFW", "spdlog", "imgui", "opengl32", "gdi32" }
  
-    ignoredefaultlibraries
-    {
-        "LIBCMTD"
-    }
- 
     filter "system:windows"
         systemversion "latest"
 

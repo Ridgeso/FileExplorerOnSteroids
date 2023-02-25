@@ -17,5 +17,7 @@ namespace FEOS
         virtual void OnEvent(Event::Event& e) override;
     
     private:
+        Files::FileList m_AllFilesInDirectory;
+        int32_t m_SelectedFile;
     };
 }

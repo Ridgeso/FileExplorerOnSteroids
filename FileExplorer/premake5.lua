@@ -24,7 +24,8 @@ project "FileExplorer"
         DEP .. "GLFW/include",
         DEP .. "imgui",
 
-        DEP .. "spdlog/include"
+        DEP .. "spdlog/include",
+        DEP .. "dirent/"
     }
 
     links
@@ -32,16 +33,18 @@ project "FileExplorer"
         "GLFW",
         "imgui",
         "spdlog",
-
-        "FileManager",
         
-        "opengl32"
+        "opengl32",
+
+        "Shlwapi"
     }
 
     defines
     {
         "_CRT_SECURE_NO_WARNINGS"
     }
+
+    characterset("MBCS")
 
     filter "system:windows"
         systemversion "latest"
