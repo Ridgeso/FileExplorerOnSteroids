@@ -29,11 +29,11 @@ namespace FEOS::Event
         WindowClose, WindowResize, WindowMinimize, WindowFocus, WindowLostFocus, WindowMoved,
         KeyPressed, KeyReleased, KeyType,
         MouseMoved, MouseScrolled, MouseButtonPressed, MouseButtonReleased,
-        ChangePath, CopyFile, DeleteFile, MoveFile, AddFile
+        ChangePath, CopyFile, DeleteFile, MoveFile, NewFile
     };
 
     using EventCategory = uint16_t;
-    enum EventCategoryEnum
+    enum EventCategoryEnum : EventCategory
     {
         NoneCategory =        0,
         ApplicationCategory = 1 << 0,

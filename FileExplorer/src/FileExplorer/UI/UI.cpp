@@ -58,10 +58,13 @@ namespace FEOS
 
     void UI::OnEvent(Event::Event& e)
     {
-        ImGuiIO& io = ImGui::GetIO();
+        if (!m_BlockEvents)
+        {
+            ImGuiIO& io = ImGui::GetIO();
 
-        e.Handled = e.IsInCategory(Event::MouseCategory) & io.WantCaptureMouse;
-        e.Handled = e.IsInCategory(Event::KeyboardCategory) & io.WantCaptureKeyboard;
+            e.Handled |= e.IsInCategory(Event::MouseCategory) & io.WantCaptureMouse;
+            e.Handled |= e.IsInCategory(Event::KeyboardCategory) & io.WantCaptureKeyboard;
+        }
     }
 
     void UI::Begin()
@@ -69,7 +72,7 @@ namespace FEOS
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-     
+
         ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
     }
 

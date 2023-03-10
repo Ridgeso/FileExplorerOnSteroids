@@ -18,7 +18,7 @@ namespace FEOS
         m_UI = new UI;
         PushOverlay(m_UI);
 
-        m_FileManager = Files::Create(Files::fs::current_path());
+        m_FileManager = Files::Create(Files::fs::current_path() / "TestDir");
     }
 
     Application::~Application()
@@ -32,8 +32,7 @@ namespace FEOS
         dispatcher.Dispatch<Event::WindowClose>(FEOS_EVENT_FN(Application::OnWindowClose));
         dispatcher.Dispatch<Event::WindowResize>(FEOS_EVENT_FN(Application::OnWindowResize));
 
-        const std::vector<Layer*>& layerStack = m_LayerStack.GetStack();
-        for (auto it = layerStack.rbegin(); it != layerStack.rend(); ++it)
+        for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
         {
             if (e.Handled)
                 break;
@@ -57,14 +56,14 @@ namespace FEOS
     {
         while (m_IsRunning)
         {
-            for (Layer* layer : m_LayerStack.GetStack())
+            for (Layer* layer : m_LayerStack)
             {
                 layer->OnUpdate();
             }
 
             m_UI->Begin();
             {
-                for (Layer* layer : m_LayerStack.GetStack())
+                for (Layer* layer : m_LayerStack)
                 {
                     layer->OnUIDraw();
                 }

@@ -8,9 +8,7 @@
 namespace FEOS
 {
     ViewPort::ViewPort()
-        : Layer("ViewPort"),
-        m_AllFilesInDirectory(Application::Get().GetFileManager().GetAllFiles()),
-        m_SelectedFile(-1)
+        : Layer("ViewPort")
     { }
 
     ViewPort::~ViewPort()
@@ -18,7 +16,12 @@ namespace FEOS
 
     void ViewPort::OnAttach()
     {
+        m_ShouldReloadFiles = false;
+        m_AllFilesInDirectory = Application::Get().GetFileManager().GetAllFiles();
 
+        m_SelectedFile = NONE_FILE_SELECTED;
+
+        m_ActionType = NoneAction;
     }
 
     void ViewPort::OnDetach()
@@ -28,13 +31,22 @@ namespace FEOS
 
     void ViewPort::OnUpdate()
     {
+        if (m_ShouldReloadFiles)
+        {
+            m_AllFilesInDirectory = Application::Get().GetFileManager().GetAllFiles();
+        }
 
+        if (ImGui::IsKeyPressed(ImGuiKey_Escape))
+        {
+            m_SelectedFile = NONE_FILE_SELECTED;
+            m_ActionType = NoneAction;
+        }
     }
 
-    #define DISABLE_UI_ON_CONDITION(condition, disableCode) \
-        if (!condition) ImGui::BeginDisabled(); \
+    #define DISABLE_UI_ON_COND(cond, disableCode) \
+        if (!(cond)) ImGui::BeginDisabled(); \
         disableCode; \
-        if (!condition) ImGui::EndDisabled();
+        if (!(cond)) ImGui::EndDisabled();
 
     void ViewPort::OnUIDraw()
     {
@@ -147,14 +159,14 @@ namespace FEOS
         float panelHeight = ImGui::GetContentRegionAvail().y;
         int columnCount = std::max((int)(panelWidth / horizontalCellSize), 1);
         bool popSelectedStyle = false;
-        
+
         ImGuiWindowFlags explorerFlags = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse;
         ImGui::Begin("Explorer", &showExplorer, explorerFlags);
             ImGui::Columns(columnCount, 0, false); 
             bool wasAnyFileClicked = false;
 
             // Listing all files
-            for (int32_t fileIt = 0; fileIt != m_AllFilesInDirectory.size(); fileIt++)
+            for (int32_t fileIt = 2; fileIt < m_AllFilesInDirectory.size(); fileIt++)
             {
                 Files::File& currentFile = m_AllFilesInDirectory[fileIt];
 
@@ -172,6 +184,7 @@ namespace FEOS
                     {
                         wasAnyFileClicked = true;
                         FEOS_INFO("Double Clicked at {}", currentFile.name.c_str());
+                        m_SelectedFile = fileIt;
                     }
                     else if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
                     {
@@ -199,12 +212,12 @@ namespace FEOS
                 if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
                 {
                     FEOS_INFO("Left Clicked at Explorer");
-                    m_SelectedFile = -1;
+                    m_SelectedFile = NONE_FILE_SELECTED;
                 }
                 else if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
                 {
                     FEOS_INFO("Right Clicked at Explorer");
-                    m_SelectedFile = -1;
+                    m_SelectedFile = NONE_FILE_SELECTED;
                     ImGui::OpenPopup("RightClickMenu");
                 }
             }
@@ -220,9 +233,19 @@ namespace FEOS
                     ImGui::EndMenu();
                 }
                 ImGui::Separator();
-                if (ImGui::Button("Cut")) { }
-                if (ImGui::Button("Move")) { }
+                if (ImGui::Button("Copy"))
+                {
+                    m_ActionType = CopyAction;
+                    m_ActionFile = m_AllFilesInDirectory[m_SelectedFile];
+                }
+                if (ImGui::Button("Cut"))
+                {
+                    m_ActionType = MoveAction;
+                    m_ActionFile = m_AllFilesInDirectory[m_SelectedFile];
+                }
                 ImGui::Separator();
+                if (ImGui::Button("Create shortcut")) { }
+                if (ImGui::Button("Delete")) { }
                 if (ImGui::Button("Rename")) { }
                 ImGui::EndPopup();
             }
@@ -236,11 +259,29 @@ namespace FEOS
                 {
                     ImGui::EndMenu();
                 }
+
                 ImGui::Separator();
-                DISABLE_UI_ON_CONDITION(false,
-                    if (ImGui::Button("Paste")) {}
+                
+                DISABLE_UI_ON_COND(m_ActionType != NoneAction,
+                    if (ImGui::Button("Paste"))
+                    {
+                        switch (m_ActionType)
+                        {
+                        case CopyAction:
+                            break;
+                        case MoveAction:
+                            break;
+                        }
+                    }
                 )
+                DISABLE_UI_ON_COND(m_ActionType == CopyAction,
+                    if (ImGui::Button("Paste Shortcut"))
+                    {
+                    }
+                )
+
                 ImGui::Separator();
+                
                 if (ImGui::BeginMenu("Group by"))
                 {
                     ImGui::EndMenu();
@@ -248,7 +289,13 @@ namespace FEOS
                 if (ImGui::BeginMenu("Create new"))
                 {
                     if (ImGui::Button("Directory")) { }
-                    if (ImGui::Button("File")) { }
+                    if (ImGui::Button("File")) 
+                    {
+                        Files::File newFile = appFileManager.CreateFile_("New file.txt");
+                        FEOS_WARN("Created New File: {}", newFile);
+                        if (newFile.type != Files::FileType::NotFound)
+                            m_AllFilesInDirectory.push_back(newFile);
+                    }
                     ImGui::EndMenu();
                 }
                 ImGui::EndPopup();

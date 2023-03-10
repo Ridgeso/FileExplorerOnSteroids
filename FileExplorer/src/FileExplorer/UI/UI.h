@@ -18,9 +18,12 @@ namespace FEOS
 
         void Begin();
         void End();
+
+        void BlockEvents(bool block) { m_BlockEvents = block; }
     
         void SetTheme();
 
     private:
+        bool m_BlockEvents = true;
     }; 
 }

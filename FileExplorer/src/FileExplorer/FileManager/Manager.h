@@ -8,6 +8,8 @@
 
 namespace FEOS::Files
 {
+    #define DELETION_ERROR true
+
     enum class FileType
     {
         NotFound = -1, None = 0, 
@@ -48,8 +50,8 @@ namespace FEOS::Files
         virtual File CreateFile_(const Path& fileName) const = 0;
         virtual void CreateFolder(const Path& folderName) const = 0;
 
-        virtual void DeleteFile_(const Path& filePath) const = 0;
-        virtual void DeleteFolder(const Path& folderPath) const = 0;
+        virtual bool DeleteFile_(const Path& filePath) const = 0;
+        virtual bool DeleteFolder(const Path& folderPath) const = 0;
         
         virtual void MoveFile_(File& file, const Path& movedFilePath) const = 0;
         virtual void MoveFolder(File& folder, const Path& movedFolderPath) const = 0;

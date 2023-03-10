@@ -15,9 +15,15 @@ namespace FEOS
         virtual void OnUpdate() override;
         virtual void OnUIDraw() override;
         virtual void OnEvent(Event::Event& e) override;
-    
+
     private:
-        Files::FileList m_AllFilesInDirectory;
+        bool m_ShouldReloadFiles;
+    
+        #define NONE_FILE_SELECTED -1
         int32_t m_SelectedFile;
+        Files::FileList m_AllFilesInDirectory;
+
+        enum { NoneAction, CopyAction, MoveAction } m_ActionType;
+        Files::File m_ActionFile;
     };
 }

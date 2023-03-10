@@ -65,18 +65,18 @@ namespace FEOS::Event
         const char* m_MoveFilePath;
     };
 
-    class AddFile : public Event
+    class NewFile : public Event
     {
     public:
-        AddFile(const char* addFilePath)
-            : m_AddFilePath(addFilePath)
+        NewFile(const char* newFilePath)
+            : m_NewFilePath(newFilePath)
         { }
 
-        EVENT_CLASS_TYPE(AddFile)
+        EVENT_CLASS_TYPE(NewFile)
         EVENT_CLASS_CATEGORY(FileSystemCategory)
 
-        EVENT_TO_STRING("AddFileEvent: " << m_AddFilePath)
+        EVENT_TO_STRING("NewFileEvent: " << m_NewFilePath)
     private:
-        const char* m_AddFilePath;
+        const char* m_NewFilePath;
     };
 }

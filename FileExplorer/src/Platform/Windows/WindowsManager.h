@@ -25,8 +25,8 @@ namespace FEOS::Files
         File CreateFile_(const Path& fileName = "New File") const override;
         void CreateFolder(const Path& folderName = "New Folder") const override;
 
-        void DeleteFile_(const Path& filePath) const override;
-        void DeleteFolder(const Path& folderPath) const override;
+        bool DeleteFile_(const Path& filePath) const override;
+        bool DeleteFolder(const Path& folderPath) const override;
         
         void MoveFile_(File& file, const Path& movedFilePath) const override;
         void MoveFolder(File& folder, const Path& movedFolderPath) const override;
@@ -39,6 +39,7 @@ namespace FEOS::Files
 
     private:
         File direntToFile(const Path& direntPath) const;
+        File ParseWindowsFile(const WIN32_FIND_DATA& filedata) const;
         File ParseFile(const Path& filePath) const;
 
     private:
@@ -46,6 +47,7 @@ namespace FEOS::Files
     };
 
     static bool DoesPathExists(const Path& path);
+    static Path FindNextFreeFileName(const Path& path);
     static FileType MachFilesystemFileTypeToFEOSFileType(const fs::file_status filesystemStatus);
     static FileType MachWindowsAttributeToFEOSFileType(DWORD attribute);
     static File InvalideFile();

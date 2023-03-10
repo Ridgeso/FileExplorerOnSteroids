@@ -27,7 +27,7 @@ namespace FEOS
 
     void LayerStack::PopLayer(Layer* layer)
     {
-        auto it = LayerPosition(layer);
+        auto it = std::find(m_Layers.begin(), m_Layers.begin() + m_LayersCount, layer);
 
         if (it == m_Layers.begin() + m_LayersCount)
             return;
@@ -39,17 +39,12 @@ namespace FEOS
 
     void LayerStack::PopOverlay(Layer* overlay)
     {
-        auto it = LayerPosition(overlay);
+        auto it = std::find(m_Layers.begin() + m_LayersCount, m_Layers.end(), overlay);
 
         if (it == m_Layers.end())
             return;
 
         overlay->OnDetach();
         m_Layers.erase(it);
-    }
-
-    std::vector<Layer*>::iterator LayerStack::LayerPosition(Layer* layer)
-    {
-        return std::find(m_Layers.begin(), m_Layers.end(), layer);
     }
 }
